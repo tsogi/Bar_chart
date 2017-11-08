@@ -1,0 +1,50 @@
+<style type="text/css">
+  #d3_wrapper div {
+    background-color: blue;
+    height:20px;
+  }
+  .chart {
+  }
+
+  #d3_wrapper .bar text {
+    fill:white;
+  }
+
+  .chart text {
+    fill: #6f7f87;
+    font: 10px sans-serif;
+    text-anchor: end;
+    font-weight: bold;
+  }
+  .axis text {
+    font: 10px sans-serif;
+    /*transform: rotate(16deg);*/
+  }
+
+  .axis path,
+  .axis line {
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .show_months:hover {
+    cursor: pointer;
+  }
+
+  .month_bar {
+    fill: #f29f90;
+    stroke: #e55034;
+  }
+  .month_bar:hover {
+    cursor: pointer;
+    fill:#854438;
+  }
+
+  .day_bar {
+    fill: #14a7e1;
+    stroke:#022330;
+  }
+  .day_bar:hover {
+    fill: #13495d;
+  }
+</style>
