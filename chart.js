@@ -1,7 +1,20 @@
 var margin = { top:0 , right:0 , bottom:20 , left:30 }
-var svg_width = 1000, svg_height = 300;
-var chart_width = svg_width - margin.right - margin.left;
-var chart_height = svg_height - margin.top - margin.bottom;
+
+var screen_width = get_screen_width_height().width;
+var screen_height = get_screen_width_height().height;
+
+var chart_container_width = define_chart_container_width(screen_width);
+var chart_container_height = define_chart_container_height(screen_height);
+
+var chart_width = chart_container_width - margin.right - margin.left;
+var chart_height = chart_container_height - margin.top - margin.bottom;
+
+var months = [{"Month":"Jan", "Quantity": 0}, {"Month":"Feb","Quantity": 0}, {"Month":"Mar","Quantity": 0}, {"Month":"Apr","Quantity": 0}, {"Month":"May","Quantity": 0}, {"Month":"Jun","Quantity": 0}, {"Month":"Jul","Quantity": 0}, {"Month":"Aug","Quantity": 0}, {"Month":"Sep","Quantity": 0}, {"Month":"Oct","Quantity": 0}, {"Month":"Nov","Quantity": 0}, {"Month":"Dec","Quantity": 0}];
+
+var month_details = [ { "Day" : "1", "Quantity" :22 }, { "Day" : "2", "Quantity" :16 }, {"Day" : "3", "Quantity" :42}, {"Day" : "4", "Quantity" :19}, {"Day" : "5", "Quantity" :38}, {"Day" : "6", "Quantity" :46}, { "Day" : "7", "Quantity" :25 }, { "Day" : "8", "Quantity" :33 }, { "Day" : "9", "Quantity" :14 }, { "Day" : "10", "Quantity" :16 }, { "Day" : "11", "Quantity" :41 }, { "Day" : "12", "Quantity" :18 }, { "Day" : "13", "Quantity" :8 }, { "Day" : "14", "Quantity" :35 }, { "Day" : "15", "Quantity" :22 }, { "Day" : "16", "Quantity" :29 }, { "Day" : "17", "Quantity" :13 }, { "Day" : "18", "Quantity" :17 }, { "Day" : "19", "Quantity" :46 }, { "Day" : "20", "Quantity" :40 }, { "Day" : "21", "Quantity" :15 }, { "Day" : "22", "Quantity" :27 }, { "Day" : "23", "Quantity" :19 }, { "Day" : "24", "Quantity" :22 }, { "Day" : "25", "Quantity" :29 }, { "Day" : "26", "Quantity" :37 }, { "Day" : "27", "Quantity" :34 }, { "Day" : "28", "Quantity" :38 }, { "Day" : "29", "Quantity" :15 }, { "Day" : "30", "Quantity" :19 }, { "Day" : "31", "Quantity" :9 } ];
+
+generate_months_data();
+draw_chart_of_months(months);
 
 function draw_chart_of_months(data){
   var horizontal_scale = d3.scaleBand().domain(data.map(function(item){return item.Month})).rangeRound([0,chart_width]);
@@ -11,11 +24,11 @@ function draw_chart_of_months(data){
   var xAxis = d3.axisBottom(horizontal_scale);
   var yAxis = d3.axisLeft(vertical_scale);
 
-  var chart = d3.select("#d3_wrapper svg").attr("width", svg_width).attr("height", svg_height)
+  var chart = d3.select("#d3_wrapper svg").attr("width", chart_container_width).attr("height", chart_container_height)
     .select("g").attr("width", chart_width).attr("height", chart_height).attr("transform", "translate("+margin.left+", "+margin.top+")");
 
   d3.select(".x.axis").remove();
-  chart.append("g").attr("class", "x axis").attr("transform", "translate(0,"+(svg_height - margin.bottom)+")").call(xAxis).call(adjustxAxisTextForMonths);
+  chart.append("g").attr("class", "x axis").attr("transform", "translate(0,"+(chart_container_height - margin.bottom)+")").call(xAxis).call(adjustxAxisTextForMonths);
   d3.select(".y.axis").remove();
   chart.append("g").attr("class", "y axis").call(yAxis);
 
@@ -47,13 +60,13 @@ function draw_chart_of_days(days){
   var xAxis = d3.axisBottom(horizontal_scale);
   var yAxis = d3.axisLeft(vertical_scale);
 
-  var chart = d3.select("#d3_wrapper svg").attr("width", svg_width).attr("height", svg_height)
+  var chart = d3.select("#d3_wrapper svg").attr("width", chart_container_width).attr("height", chart_container_height)
     .select("g").attr("width", chart_width).attr("height", chart_height).attr("transform", "translate("+margin.left+", "+margin.top+")");
 
   var bar = chart.selectAll(".bar").data(days);
 
   d3.select(".x.axis").remove();
-  chart.append("g").attr("class", "x axis").attr("transform", "translate(0,"+(svg_height - margin.bottom)+")").call(xAxis).call(adjustxAxisTextForDays);
+  chart.append("g").attr("class", "x axis").attr("transform", "translate(0,"+(chart_container_height - margin.bottom)+")").call(xAxis).call(adjustxAxisTextForDays);
   d3.select(".y.axis").remove();
   chart.append("g").attr("class", "y axis").call(yAxis);
 
@@ -103,10 +116,6 @@ function adjustxAxisTextForDays(selection){
   selection.selectAll("text").attr("transform", "translate(4,0)");
 }
 
-var months = [{"Month":"Jan", "Quantity": 0}, {"Month":"Feb","Quantity": 0}, {"Month":"Mar","Quantity": 0}, {"Month":"Apr","Quantity": 0}, {"Month":"May","Quantity": 0}, {"Month":"Jun","Quantity": 0}, {"Month":"Jul","Quantity": 0}, {"Month":"Aug","Quantity": 0}, {"Month":"Sep","Quantity": 0}, {"Month":"Oct","Quantity": 0}, {"Month":"Nov","Quantity": 0}, {"Month":"Dec","Quantity": 0}];
-
- var month_details = [ { "Day" : "1", "Quantity" :22 }, { "Day" : "2", "Quantity" :16 }, {"Day" : "3", "Quantity" :42}, {"Day" : "4", "Quantity" :19}, {"Day" : "5", "Quantity" :38}, {"Day" : "6", "Quantity" :46}, { "Day" : "7", "Quantity" :25 }, { "Day" : "8", "Quantity" :33 }, { "Day" : "9", "Quantity" :14 }, { "Day" : "10", "Quantity" :16 }, { "Day" : "11", "Quantity" :41 }, { "Day" : "12", "Quantity" :18 }, { "Day" : "13", "Quantity" :8 }, { "Day" : "14", "Quantity" :35 }, { "Day" : "15", "Quantity" :22 }, { "Day" : "16", "Quantity" :29 }, { "Day" : "17", "Quantity" :13 }, { "Day" : "18", "Quantity" :17 }, { "Day" : "19", "Quantity" :46 }, { "Day" : "20", "Quantity" :40 }, { "Day" : "21", "Quantity" :15 }, { "Day" : "22", "Quantity" :27 }, { "Day" : "23", "Quantity" :19 }, { "Day" : "24", "Quantity" :22 }, { "Day" : "25", "Quantity" :29 }, { "Day" : "26", "Quantity" :37 }, { "Day" : "27", "Quantity" :34 }, { "Day" : "28", "Quantity" :38 }, { "Day" : "29", "Quantity" :15 }, { "Day" : "30", "Quantity" :19 }, { "Day" : "31", "Quantity" :9 } ];
-
 function generate_months_data(){
   for(var i = 0; i < months.length; i++){
     months[i].Quantity = Math.floor(Math.random() * (100 - 0) + 0);
@@ -119,5 +128,28 @@ function draw_show_months_button(){
   });
 }
 
-generate_months_data();
-draw_chart_of_months(months);
+function define_chart_container_width(screen_width){
+  if(screen_width > 1000) {
+    return 1000;
+  } else {
+    return screen_width - 30;
+  }
+}
+
+function define_chart_container_height(screen_height){
+  if(screen_height > 500) {
+    return 500;
+  } else {
+    return screen_height - 20;
+  }
+}
+
+function get_screen_width_height(){
+  var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+  return {width:x, height:y}
+}
