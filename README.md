@@ -2,5 +2,5 @@
 
 100% responsive interactive bar chart on d3.js
 
-Test online <a href="https://tsogiaidze.ge/d3/bar_chart/">Demo Version</a>
+Test online <a href="https://tsogiaidze.ge/d3/bar_chart/" target="_blank">Demo Version</a>
 
