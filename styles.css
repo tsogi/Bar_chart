@@ -1,4 +1,7 @@
-<style type="text/css">
+  html {
+    background-color: #ffd9a9;
+  }
+
   #d3_wrapper div {
     background-color: blue;
     height:20px;
@@ -17,8 +20,6 @@
     font-weight: bold;
   }
   .axis text {
-    font: 10px sans-serif;
-    /*transform: rotate(16deg);*/
   }
 
   .axis path,
@@ -47,4 +48,3 @@
   .day_bar:hover {
     fill: #13495d;
   }
-</style>
