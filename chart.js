@@ -13,14 +13,15 @@ var months = [{"Month":"Jan", "Quantity": 0}, {"Month":"Feb","Quantity": 0}, {"M
 
 var month_details = [ { "Day" : "1", "Quantity" :22 }, { "Day" : "2", "Quantity" :16 }, {"Day" : "3", "Quantity" :42}, {"Day" : "4", "Quantity" :19}, {"Day" : "5", "Quantity" :38}, {"Day" : "6", "Quantity" :46}, { "Day" : "7", "Quantity" :25 }, { "Day" : "8", "Quantity" :33 }, { "Day" : "9", "Quantity" :14 }, { "Day" : "10", "Quantity" :16 }, { "Day" : "11", "Quantity" :41 }, { "Day" : "12", "Quantity" :18 }, { "Day" : "13", "Quantity" :8 }, { "Day" : "14", "Quantity" :35 }, { "Day" : "15", "Quantity" :22 }, { "Day" : "16", "Quantity" :29 }, { "Day" : "17", "Quantity" :13 }, { "Day" : "18", "Quantity" :17 }, { "Day" : "19", "Quantity" :46 }, { "Day" : "20", "Quantity" :40 }, { "Day" : "21", "Quantity" :15 }, { "Day" : "22", "Quantity" :27 }, { "Day" : "23", "Quantity" :19 }, { "Day" : "24", "Quantity" :22 }, { "Day" : "25", "Quantity" :29 }, { "Day" : "26", "Quantity" :37 }, { "Day" : "27", "Quantity" :34 }, { "Day" : "28", "Quantity" :38 }, { "Day" : "29", "Quantity" :15 }, { "Day" : "30", "Quantity" :19 }, { "Day" : "31", "Quantity" :9 } ];
 
-generate_months_data();
+// Starting point of the script execution
+generate_random_months_data();
 draw_chart_of_months(months);
 
 function draw_chart_of_months(data){
   var horizontal_scale = d3.scaleBand().domain(data.map(function(item){return item.Month})).rangeRound([0,chart_width]);
   var vertical_scale = d3.scaleLinear().domain([0,d3.max(data, function(item){return item.Quantity})]).range([chart_height, 0]);
   var bar_width = chart_width / data.length - chart_width / data.length / 2;
-  var bar_vertical_margin = (chart_width / data.length - bar_width) / 2;
+  var bar_horizontal_margin = (chart_width / data.length - bar_width) / 2;
   var xAxis = d3.axisBottom(horizontal_scale);
   var yAxis = d3.axisLeft(vertical_scale);
 
@@ -35,12 +36,12 @@ function draw_chart_of_months(data){
   var bar = chart.selectAll(".bar").data(data);
 
   var g = bar.enter().append("g").attr("class", "bar");
-  g.append("rect").attr("x", function(d,i) {return horizontal_scale(d.Month) + bar_vertical_margin})
+  g.append("rect").attr("x", function(d,i) {return horizontal_scale(d.Month) + bar_horizontal_margin})
     .attr("y", function(d){return vertical_scale(d.Quantity)})
     .attr("width", bar_width)
     .on("click", function(d, i) { month_selected(d)})
     .on("mouseover", function(d,i){
-        d3.select(this.parentNode).append("text").attr("x", function(d,i) {return horizontal_scale(d.Month) + bar_vertical_margin + bar_width/2 + 5}).text(d.Quantity).attr("y", function(d){return vertical_scale(d.Quantity) + 15});
+        d3.select(this.parentNode).append("text").attr("x", function(d,i) {return horizontal_scale(d.Month) + bar_horizontal_margin + bar_width/2 + 5}).text(d.Quantity).attr("y", function(d){return vertical_scale(d.Quantity) + 15});
       })
     .on("mouseout", function(d,i){
         d3.select(this.parentNode).selectAll("text").remove();
@@ -56,7 +57,7 @@ function draw_chart_of_days(days){
   var horizontal_scale = d3.scaleBand().domain(days.map(function(item){return item.Day})).rangeRound([0,chart_width]);
   var vertical_scale = d3.scaleLinear().domain([0,d3.max(days, function(item){return item.Quantity})]).range([chart_height, 0]);
   var bar_width = chart_width / days.length - chart_width / days.length / 2;
-  var bar_vertical_margin = (chart_width / days.length - bar_width) / 2;
+  var bar_horizontal_margin = (chart_width / days.length - bar_width) / 2;
   var xAxis = d3.axisBottom(horizontal_scale);
   var yAxis = d3.axisLeft(vertical_scale);
 
@@ -72,11 +73,11 @@ function draw_chart_of_days(days){
 
   var g = bar.enter().append("g").attr("class", "bar");
 
-  g.append("rect").attr("x", function(d,i) {return horizontal_scale(d.Day) + bar_vertical_margin})
+  g.append("rect").attr("x", function(d,i) {return horizontal_scale(d.Day) + bar_horizontal_margin})
     .attr("y", function(d){return vertical_scale(d.Quantity)})
     .attr("width", bar_width)
     .on("mouseover", function(d,i){
-        d3.select(this.parentNode).append("text").attr("x", function(d,i) {return horizontal_scale(d.Day) + bar_vertical_margin + bar_width/2 + 5}).text(d.Quantity).attr("y", function(d){return vertical_scale(d.Quantity) + 15});
+        d3.select(this.parentNode).append("text").attr("x", function(d,i) {return horizontal_scale(d.Day) + bar_horizontal_margin + bar_width/2 + 5}).text(d.Quantity).attr("y", function(d){return vertical_scale(d.Quantity) + 15});
       })
     .on("mouseout", function(d,i){
         d3.select(this.parentNode).selectAll("text").remove();
@@ -116,7 +117,7 @@ function adjustxAxisTextForDays(selection){
   selection.selectAll("text").attr("transform", "translate(4,0)");
 }
 
-function generate_months_data(){
+function generate_random_months_data(){
   for(var i = 0; i < months.length; i++){
     months[i].Quantity = Math.floor(Math.random() * (100 - 0) + 0);
   }
